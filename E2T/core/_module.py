@@ -26,7 +26,7 @@ class LightningEpisodicModule(LightningModule):
             prog_bar=True,
             logger=True,
         )
-        return train_loss.item()
+        return train_loss
 
     def validation_step(self, batch, batch_idx):
         val_loss = self.meta_learn(batch)
@@ -83,7 +83,7 @@ class LtMNNs(LightningEpisodicModule):
 
     def meta_learn(self, batch):
         self.encoder.train()
-        (support_x, support_y, _), (query_x, query_y, _) = batch
+        (support_x, _, support_y), (query_x, _, query_y) = batch
         s_emb = self.encoder(support_x)
         q_emb = self.encoder(query_x)
         y_hat = self.header(s_emb, support_y, q_emb)
@@ -109,7 +109,7 @@ class LtMNNs(LightningEpisodicModule):
             s_emb = self.encoder(support_x)
             q_emb = self.encoder(query_x)
 
-        y_hat = self.header(s_emb, support_y, q_emb)
+        y_hat = self.header(s_emb, support_y.reshape(-1, 1), q_emb)
 
         if scaler is not None:
             y_hat = scaler.inverse_transform(y_hat.cpu())

@@ -166,18 +166,18 @@ def parity_plot(
     ax.yaxis.set_tick_params(labelsize=fontsize)
     ax.legend(loc="lower right", fontsize=fontsize)
 
-    ax.text(0.05, 0.98, f"[{y1_label}, {y2_label}]", transform=ax.transAxes, fontsize=fontsize)
+    ax.text(0.05, 0.98, f"[{y1_label} | {y2_label}]", transform=ax.transAxes, fontsize=fontsize)
     R2_train = r2_score(y1_obs, y1_pred) if len(y1_obs) > 1 else np.nan
     R2_test = r2_score(y2_obs, y2_pred) if len(y2_obs) > 1 else np.nan
-    ax.text(0.05, 0.92, f"$R^2$: {R2_train:.3f}, {R2_test:.3f}", transform=ax.transAxes, fontsize=fontsize)
+    ax.text(0.05, 0.92, f"$R^2$: {R2_train:.3f} | {R2_test:.3f}", transform=ax.transAxes, fontsize=fontsize)
 
     rmse_train = mean_squared_error(y1_obs, y1_pred, squared=False) if len(y1_obs) > 1 else np.nan
     rmse_test = mean_squared_error(y2_obs, y2_pred, squared=False) if len(y2_obs) > 1 else np.nan
-    ax.text(0.05, 0.875, f"RMSE: {rmse_train:.3g}, {rmse_test:.3g}", transform=ax.transAxes, fontsize=fontsize)
+    ax.text(0.05, 0.875, f"RMSE: {rmse_train:.3g} | {rmse_test:.3g}", transform=ax.transAxes, fontsize=fontsize)
 
     mae_train = mean_absolute_error(y1_obs, y1_pred) if len(y1_obs) > 1 else np.nan
     mae_test = mean_absolute_error(y2_obs, y2_pred) if len(y2_obs) > 1 else np.nan
-    ax.text(0.05, 0.83, f"MAE: {mae_train:.3g}, {mae_test:.3g}", transform=ax.transAxes, fontsize=fontsize)
+    ax.text(0.05, 0.83, f"MAE: {mae_train:.3g} | {mae_test:.3g}", transform=ax.transAxes, fontsize=fontsize)
 
     if filename:
         filename = Path(filename)

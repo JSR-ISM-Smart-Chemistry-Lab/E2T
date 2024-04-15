@@ -191,7 +191,8 @@ class TableDataset(Dataset):
         return len(self.X)
 
     def __getitem__(self, idx):
-        return self.X[idx], self.y[idx], self.class_labels[idx]
+        # This order is important for l2l.data.MetaDataset
+        return self.X[idx], self.class_labels[idx], self.y[idx]
 
 
 class CustomTaskDataset(l2l.data.TaskDataset):
@@ -239,8 +240,8 @@ class CustomTaskDataset(l2l.data.TaskDataset):
         self.query_nways = query_nways
         self.query_size = query_size
 
-        self.label_set = set(dataset.class_labels)
-        self.initial_filter_labels = filter_classes if filter_classes else list(self.unique_labels)
+        self.label_set = set(dataset.labels)
+        self.initial_filter_labels = filter_classes if filter_classes else list(self.label_set)
 
     def sample(self):
         """
