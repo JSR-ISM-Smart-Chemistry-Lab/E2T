@@ -9,8 +9,8 @@ trainer:
     # logger configuration
     class_path: lightning.pytorch.loggers.CSVLogger
     init_args:
-      save_dir: # your logger path
-      name: # your experiment name
+      save_dir: ./result # your logger path
+      name: example # your experiment name
       version: null
       prefix: ''
       flush_logs_every_n_steps: 100
@@ -46,7 +46,7 @@ trainer:
       every_n_epochs: null
       save_on_train_epoch_end: null
   fast_dev_run: false
-  max_epochs: # your max epochs (when without EStopping) 
+  max_epochs: null # your max epochs (when without EStopping) 
   min_epochs: null
   max_steps: -1
   min_steps: null
@@ -102,16 +102,17 @@ model:
   scheduler_step: 0
   scheduler_decay: 0
 data:
-  csv_path: # your data path
+  # data path
+  csv_path: ../00_sample_data_preparation/PI1070_preprocessed.csv
   # classes used in training (test on remaining classes)
   train_classes:
+  - 1
   - 2
   - 3
   - 4
   - 5
   - 6
   - 7
-  - 8
   - 9
   - 10
   - 11
@@ -133,8 +134,8 @@ data:
   val_ratio: 0.2
   scale_y: true
   samples_per_class: -1 
-  target_col_idx: -2
-  class_col_idx: -1
+  target_col_idx: -1
+  class_col_idx: -2
   train_epoch_length: 10
   val_epoch_length: 1
 ckpt_path: null
