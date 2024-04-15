@@ -88,6 +88,8 @@ if __name__ == "__main__":
     descriptors[POLYMER_CLASS] = data[POLYMER_CLASS]
     descriptors[CP] = data[CP]
 
+    descriptors = descriptors.dropna()
+
     # Save preprocessed data
     LOGGER.info("Output data to %s", args.output_path)
     p = Path(args.output_path)
