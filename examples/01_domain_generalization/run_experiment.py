@@ -83,8 +83,8 @@ class CustomLightningCLI(LightningCLI):
         result["val_size"] = len(self.datamodule.val_data_sampled) if self.datamodule.val_ratio > 0 else 0
         result["train_val_size"] = result["train_size"] + result["val_size"]
         result["test_size"] = len(test_data)
-        result["out_dir"] = out_dir_child
-        result["csv_path"] = self.datamodule.csv_path
+        result["out_dir"] = out_dir_child.absolute()
+        result["csv_path"] = Path(self.datamodule.csv_path).absolute()
         result["samples_per_class"] = self.datamodule.samples_per_class
         result["train_classes"] = self.datamodule.train_classes
 
