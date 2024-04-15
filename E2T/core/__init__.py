@@ -4,10 +4,14 @@ from ._datamodule import (
 )
 
 from ._module import (
+    FCEncoder,
     LtMNNs,
+    RidgeRegressionHeader,
 )
 
 __all__ = [
     "TableDataModule",
+    "FCEncoder",
     "LtMNNs",
+    "RidgeRegressionHeader",
 ]

@@ -1,0 +1,140 @@
+# lightning.pytorch==2.2.2
+trainer:
+  accelerator: auto
+  strategy: auto
+  devices: auto
+  num_nodes: 1
+  precision: 32-true
+  logger:
+    # logger configuration
+    class_path: lightning.pytorch.loggers.CSVLogger
+    init_args:
+      save_dir: # your logger path
+      name: # your experiment name
+      version: null
+      prefix: ''
+      flush_logs_every_n_steps: 100
+  callbacks:
+  # EarlyStopping configuration
+  - class_path: lightning.pytorch.callbacks.EarlyStopping
+    init_args:
+      monitor: val_loss
+      min_delta: 0.0
+      patience: 300
+      verbose: false
+      mode: min
+      strict: true
+      check_finite: true
+      stopping_threshold: null
+      divergence_threshold: null
+      check_on_train_epoch_end: null
+      log_rank_zero_only: false
+  # ModelCheckpoint configuration
+  - class_path: lightning.pytorch.callbacks.ModelCheckpoint
+    init_args:
+      dirpath: null
+      filename: null
+      monitor: val_loss
+      verbose: false
+      save_last: false
+      save_top_k: 1
+      save_weights_only: false
+      mode: min
+      auto_insert_metric_name: true
+      every_n_train_steps: null
+      train_time_interval: null
+      every_n_epochs: null
+      save_on_train_epoch_end: null
+  fast_dev_run: false
+  max_epochs: # your max epochs (when without EStopping) 
+  min_epochs: null
+  max_steps: -1
+  min_steps: null
+  max_time: null
+  limit_train_batches: null
+  limit_val_batches: null
+  limit_test_batches: null
+  limit_predict_batches: null
+  overfit_batches: 0.0
+  val_check_interval: null
+  check_val_every_n_epoch: 1
+  num_sanity_val_steps: null
+  log_every_n_steps: null
+  enable_checkpointing: null
+  enable_progress_bar: null
+  enable_model_summary: null
+  accumulate_grad_batches: 1
+  gradient_clip_val: null
+  gradient_clip_algorithm: null
+  deterministic: null
+  benchmark: null
+  inference_mode: true
+  use_distributed_sampler: true
+  profiler: null
+  detect_anomaly: false
+  barebones: false
+  plugins: null
+  sync_batchnorm: false
+  reload_dataloaders_every_n_epochs: 0
+  default_root_dir: null
+model:
+  # Encoder configuration (You can design your encoder)
+  encoder:
+    class_path: E2T.core.FCEncoder
+    init_args:
+      sizes:
+      - 2048
+      - 128
+      - 128
+      - 16
+      dropout: 0.2
+      batch_norm: false
+      normalize_out: true
+  # Header configuration
+  header:
+    class_path: E2T.core.RidgeRegressionHeader
+    init_args:
+      alpha: 0.1
+      fit_intercept: true
+  loss: null
+  # learning rate configuration
+  lr: 0.0002 
+  scheduler_step: 0
+  scheduler_decay: 0
+data:
+  csv_path: # your data path
+  # classes used in training (test on remaining classes)
+  train_classes:
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
+  - 11
+  - 12
+  - 13
+  - 14
+  - 15
+  - 16
+  - 18
+  - 19
+  - 20
+  - 21
+  sampling_policy: SoftGKFold # Sampling policy
+  support_nways: 1
+  support_size: 30
+  query_nways: 1
+  query_size: 30
+  random_seed: 42
+  val_ratio: 0.2
+  scale_y: true
+  samples_per_class: -1 
+  target_col_idx: -2
+  class_col_idx: -1
+  train_epoch_length: 10
+  val_epoch_length: 1
+ckpt_path: null

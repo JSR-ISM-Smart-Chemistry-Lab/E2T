@@ -166,3 +166,57 @@ class RidgeRegressionHeader(nn.Module):
         shape[-1] = 1
         return torch.cat([x, torch.ones(shape, device=device)], dim=-1)
 
+
+class FCEncoder(nn.Module):
+    def __init__(
+        self,
+        sizes,
+        dropout=0.2,
+        batch_norm=False,
+        normalize_out=True,
+    ):
+        super().__init__()
+        self.sizes = sizes
+        self.dropout = dropout
+        self.batch_norm = batch_norm
+        self.normalize_out = normalize_out
+
+        # dropout preprocess
+        if isinstance(dropout, float):
+            dropouts = [dropout] * (len(sizes) - 2)
+        elif isinstance(dropout, (tuple, list)):
+            assert len(dropouts) == (len(sizes) - 2)
+            dropouts = dropout
+
+        # definition of network
+        layers = []
+        for i in range(1, len(sizes)):
+            layers.append(nn.Linear(sizes[i-1], sizes[i]))
+            if i < len(sizes) - 1:
+                # Batch normalization
+                if batch_norm:
+                    layers.append(nn.BatchNorm1d(sizes[i]))
+                # Activation function
+                layers.append(nn.ReLU())
+                # Dropout
+                if dropouts[i-1] > 0:
+                    layers.append(nn.Dropout(dropouts[i-1]))
+
+        if normalize_out:
+            layers.append(nn.LayerNorm(sizes[i]))
+
+        self.layers = nn.Sequential(*layers)
+        self.initialize_weights()
+
+    def initialize_weights(self):
+        """ initialize wieghts using He's method"""
+        for m in self.modules():
+            if isinstance(m, nn.Linear):
+                nn.init.kaiming_uniform_(m.weight)
+
+                if m.bias is not None:
+                    nn.init.constant_(m.bias, 0)
+
+    def forward(self, X):
+        emb = self.layers(X)
+        return emb
