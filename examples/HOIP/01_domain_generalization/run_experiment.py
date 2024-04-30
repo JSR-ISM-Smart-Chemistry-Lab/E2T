@@ -91,7 +91,7 @@ class CustomLightningCLI(LightningCLI):
 def cli_main():
     cli = CustomLightningCLI(
         model_class=LtGraphMNNs,
-        datamodel_class=CIFDataModule,
+        datamodule_class=CIFDataModule,
     )
 
 if __name__ == '__main__':
