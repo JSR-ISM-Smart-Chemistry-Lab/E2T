@@ -35,7 +35,7 @@ class LtGraphMNNs(LightningEpisodicModule):
         self.header = header
 
         if self.normalize_emb:
-            self.layer_norm = nn.LinearNorm(self.emb_size)
+            self.layer_norm = nn.LayerNorm(self.emb_size)
             self.encoder = nn.Sequential(
                 get_gnn(N_ELEM_FEATS, n_edge_feats=128, dim_out=self.emb_size, gnn_model=self.gnn_model),
                 self.layer_norm,
