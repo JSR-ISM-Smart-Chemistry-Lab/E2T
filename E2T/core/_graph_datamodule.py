@@ -80,7 +80,7 @@ class CIFDataset(Dataset):
         targets = id_target[:, self.idx_target]
 
         gid = 0
-        for i in tqdm(range(0, id_target.shape[0])):
+        for i in range(0, id_target.shape[0]):
             cg = read_cif(elem_feats, self.path, str(id_target[i, 0]), self.n_bond_feats, self.radius, targets[i])
             elements = get_elements_from_cif(self.path + "/" + str(id_target[i, 0]) + ".cif")
             label = elements_to_category(elements)
