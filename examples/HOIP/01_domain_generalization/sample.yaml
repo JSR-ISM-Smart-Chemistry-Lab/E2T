@@ -84,7 +84,7 @@ model:
   header:
     class_path: E2T.core.RidgeRegressionHeader
     init_args:
-      alpha: 1e3
+      alpha: 10
       fit_intercept: true
   loss: null
   lr: 5e-4
@@ -98,9 +98,9 @@ data:
   idx_target: 1
   sampling_policy: GKFold
   support_nways: 10
-  support_size: 10
+  support_size: 50
   query_nways: 1
-  query_size: 10
+  query_size: 50
   random_seed: 42
   val_ratio: 0.1
   scale_y: false
