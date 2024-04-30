@@ -2,7 +2,7 @@
 
 Follow these steps to prepare sample data:
 
-## Step 1. Donwload the data
+## Step 1. Download the data
 First, download the necessary data file from the following link:
 Download PI1070.csv (https://github.com/RadonPy/RadonPy/blob/develop/data/PI1070.csv)
 

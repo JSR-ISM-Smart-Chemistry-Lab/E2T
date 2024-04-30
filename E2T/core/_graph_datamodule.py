@@ -8,7 +8,7 @@ from ane.util.crystal import read_cif, get_elem_feats
 from lightning.pytorch import LightningDataModule
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from torch_geomtric.data import Dataset, Batch
+from torch_geometric.data import Dataset, Batch
 from pymatgen.core.structure import Structure
 
 from ._datamodule import CustomTaskDataset
