@@ -91,24 +91,38 @@ class CIFDataset(Dataset):
                 list_cgs.append(cg)
                 gid += 1
 
-            return list_cgs
+        return list_cgs
 
 
 class CIFCustomTaskDataset(CustomTaskDataset):
 
     def _sample_same(self):
+        raise("Same sampling option is not supported.")
         pass
 
-    def _sapmle_by_gkfold(self, soft=False):
+    def _sample_by_gkfold(self, soft=False):
         # reset filter labels
         self.transforms[0].filter_labels = self.initial_filter_labels
 
-        support_nways = self._sapmle_nways(self.support_nways)
-        query_nways = self._sapmle_nways(self.query_nways)
+        support_nways = self._sample_nways(self.support_nways)
+        query_nways = self._sample_nways(self.query_nways)
         support_kshots = int(self.support_size / support_nways)
 
-        self.transform[0].n = support_nways
-        self.transfor
+        self.transforms[0].n = support_nways
+        self.transforms[0].k = support_kshots
+        support = self[0]
+
+        if soft is False:
+            support_label_set = set(support.label)
+            query_candidates = list(self.label_set - support_label_set)
+            self.transforms[0].filter_labels = query_candidates
+
+        query_kshots = int(self.query_size / query_nways)
+        self.transforms[0].n = query_nways
+        self.transforms[0].k = query_kshots
+        query = self[0]
+
+        return support, query
 
 
 class CIFDataModule(LightningDataModule):

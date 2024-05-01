@@ -207,6 +207,7 @@ class CustomTaskDataset(l2l.data.TaskDataset):
         support_size=10,
         query_nways=1,
         query_size=10,
+        task_collate=None,
         filter_classes=None,
     ):
         self.transforms = [
@@ -222,6 +223,8 @@ class CustomTaskDataset(l2l.data.TaskDataset):
         super(CustomTaskDataset, self).__init__(
             dataset,
             task_transforms=self.transforms,
+            num_tasks=-1,
+            task_collate=task_collate,
         )
 
         # argument mapping
@@ -286,8 +289,8 @@ class CustomTaskDataset(l2l.data.TaskDataset):
         support = self[0]
 
         if soft is False:
-            support_labels = set(support[1].tolist())
-            query_candidates = list(self.unique_labels - support_labels)
+            support_label_set = set(support[1].tolist())
+            query_candidates = list(self.label_set - support_label_set)
             self.transforms[0].filter_labels = query_candidates
 
         query_kshots = int(self.query_size / query_nways)
