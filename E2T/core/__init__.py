@@ -1,6 +1,8 @@
 
 from ._datamodule import (
     TableDataModule,
+    TableDataset,
+    CustomTaskDataset,
 )
 
 from ._module import (
@@ -19,6 +21,8 @@ from ._graph_module import (
 
 __all__ = [
     "TableDataModule",
+    "TableDataset",
+    "CustomTaskDataset",
     "FCEncoder",
     "LtMNNs",
     "RidgeRegressionHeader",

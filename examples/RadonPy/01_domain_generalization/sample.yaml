@@ -46,7 +46,7 @@ trainer:
       every_n_epochs: null
       save_on_train_epoch_end: null
   fast_dev_run: false
-  max_epochs: null # your max epochs (when without EStopping) 
+  max_epochs: null # your max epochs (when without EStopping)
   min_epochs: null
   max_steps: -1
   min_steps: null
@@ -98,7 +98,7 @@ model:
       fit_intercept: true
   loss: null
   # learning rate configuration
-  lr: 0.0002 
+  lr: 0.0002
   scheduler_step: 0
   scheduler_decay: 0
 data:
@@ -133,7 +133,7 @@ data:
   random_seed: 42
   val_ratio: 0.2
   scale_y: true
-  samples_per_class: -1 
+  samples_per_class: -1
   target_col_idx: -1
   class_col_idx: -2
   train_epoch_length: 10
