@@ -59,11 +59,11 @@ class CustomLightningCLI(LightningCLI):
         target_col, class_col = self.datamodule.target_col, self.datamodule.class_col
         support_x, support_y = (
             torch.tensor(support.drop(columns=[target_col, class_col]).values).to(template_X),
-            torch.tensor(support[target_col].values).to(template_y).to(template_y),
+            torch.tensor(support[target_col].values).to(template_y),
         )
         test_x, test_y = (
             torch.tensor(test_data.drop(columns=[target_col, class_col]).values).to(template_X),
-            torch.tensor(test_data[target_col].values).to(template_y).to(template_y),
+            torch.tensor(test_data[target_col].values).to(template_y),
         )
 
         scaler = self.datamodule.scaler if self.datamodule.scale_y else None

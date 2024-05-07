@@ -14,7 +14,7 @@ from lightning.pytorch.loggers import CSVLogger
 from lightning.pytorch.callbacks import ModelCheckpoint, EarlyStopping
 from sklearn.model_selection import train_test_split
 
-from E2T.core import LtMNNs, TableDataSet, CustomTaskDataset
+from E2T.core import LtMNNs, TableDataset, CustomTaskDataset
 from E2T.utils import evaluate_regression_result, save_loss_series_fig
 
 
@@ -26,14 +26,14 @@ SEED2 = 4242
 LR = 1e-5
 FT_SIZES = [0, 20, 50]
 
-SOURCE_MODEL_PATH = "xxx"
-SCALER_PATH = "xxx"
+SOURCE_MODEL_PATH = "../01_domain_generalization/result/example/version_0/checkpoints/epoch=968-step=9690.ckpt"
+SCALER_PATH = "../01_domain_generalization/result/example/version_0/scaler.joblib"
 DATA_PATH = "../00_sample_data_preparation/PI1070_preprocessed.csv"
 
-TARGET_COL = "xxx"
-CLASS_COL = "xxx"
+TARGET_COL = "Cp"
+CLASS_COL = "polymer_class"
 
-TARGET_CLASS = 8
+TARGET_CLASS = 4
 
 OUT_DIR = "./result"
 
@@ -123,7 +123,7 @@ def finetune_and_eval(
         y_test = torch.from_numpy(np.array(target_y_test).astype(np.float32))
 
         if scaler:
-            y_train = torch.tensor(scaler.transform(source_y.reshape(-1, 1)).astype(np.float32))
+            y_train = torch.tensor(scaler.transform(np.array(source_y).reshape(-1, 1)).astype(np.float32))
         else:
             y_train = torch.from_numpy(np.array(source_y).astype(np.float32))
 
@@ -147,14 +147,15 @@ def finetune_and_eval(
         train_test_split(X_ft, y_ft, test_size=0.2, random_state=seed2)
 
     X_ft_concat = pd.concat([X_ft_train, source_X], axis=0)
-    y_ft_concat = np.concatenate([y_ft_train, source_y.reshape(-1, 1)], axis=0)
+    y_ft_concat = np.concatenate([y_ft_train, source_y], axis=0)
     if scaler:
-        y_ft_concat = scaler.transform(y_ft_concat)
+        y_ft_concat = scaler.transform(y_ft_concat.reshape(-1, 1))
+        y_ft_val = scaler.transform(np.array(y_ft_val).reshape(-1, 1))
 
-    ft_train_dataset = TableDataSet(
+    ft_train_dataset = TableDataset(
         X_ft_concat, y_ft_concat, [0] * len(X_ft_train) + [1] * len(source_X),
     )
-    ft_val_dataset = TableDataSet(
+    ft_val_dataset = TableDataset(
         X_ft_val, y_ft_val, [0] * len(X_ft_val),
     )
 
@@ -206,7 +207,8 @@ def finetune_and_eval(
 if __name__ == "__main__":
 
     source_model = LtMNNs.load_from_checkpoint(SOURCE_MODEL_PATH)
-    scaler = joblib.load(SCALER_PATH)
+    if SCALER_PATH:
+        scaler = joblib.load(SCALER_PATH)
 
     data = pd.read_csv(DATA_PATH)
 
@@ -238,7 +240,7 @@ if __name__ == "__main__":
             lr=LR,
             out_dir=out_dir,
         )
-        result["source_model_path"] = SOURCE_MODEL_PATH.absolute()
+        result["source_model_path"] = Path(SOURCE_MODEL_PATH).absolute()
 
         results.append(result)
 
