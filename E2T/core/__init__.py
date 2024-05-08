@@ -11,10 +11,14 @@ from ._module import (
     RidgeRegressionHeader,
 )
 
-
+# Since graph module requires some additional packages,
+# importing graph module is not mandatory.
 try:
     from ._graph_datamodule import (
         CIFDataModule,
+        CIFDataset,
+        CIFCustomTaskDataset,
+        pyg_collate,
     )
 
     from ._graph_module import (
@@ -32,5 +36,8 @@ __all__ = [
     "LtMNNs",
     "RidgeRegressionHeader",
     "CIFDataModule",
+    "CIFDataset",
+    "CIFCustomTaskDataset",
+    "pyg_collate",
     "LtGraphMNNs",
 ]
