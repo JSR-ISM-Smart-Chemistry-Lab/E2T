@@ -22,7 +22,7 @@ create environment
 install required packages
 
 ### Step3.
-install E2T package using `pip install -e .`
+install E2T package using `pip install .`
 
 ### Step4.
 See example directory.
